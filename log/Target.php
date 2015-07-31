@@ -17,6 +17,10 @@ class Target extends \yii\log\Target
                     ['timestamp' => (int)$message[3]]
             );
         }
+
+        if (Rollbar::$instance->batched) {
+            Rollbar::flush();
+        }
     }
 
     public static function getLevelName($level)
