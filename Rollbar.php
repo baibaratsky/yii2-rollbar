@@ -17,6 +17,7 @@ class Rollbar extends Object
     public $host;
     public $includedErrno;
     public $logger;
+    public $personFn;
     public $root = '@app';
     public $scrubFields = ['passwd', 'password', 'secret', 'auth_token', '_csrf'];
     public $timeout;
@@ -36,6 +37,7 @@ class Rollbar extends Object
                         'host' => $this->host,
                         'included_errno' => $this->includedErrno,
                         'logger' => $this->logger,
+                        'person_fn' => $this->personFn,
                         'root' => !empty($this->root) ? Yii::getAlias($this->root) : null,
                         'scrub_fields' => $this->scrubFields,
                         'timeout' => $this->timeout,
