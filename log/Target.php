@@ -9,11 +9,15 @@ class Target extends \yii\log\Target
 {
     public function export()
     {
+        $fingerprint = uniqid();
         foreach ($this->messages as $message) {
             Rollbar::report_message(
                     $message[0],
                     self::getLevelName($message[1]),
-                    ['category' => $message[2]],
+                    [
+                        'category' => $message[2],
+                        'fingerprint' => $fingerprint
+                    ],
                     ['timestamp' => (int)$message[3]]
             );
         }
