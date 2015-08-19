@@ -7,13 +7,24 @@ use yii\log\Logger;
 
 class Target extends \yii\log\Target
 {
+    protected $requestId;
+
+    public function init()
+    {
+        $this->requestId = uniqid(gethostname(), true);
+        parent::init();
+    }
+
     public function export()
     {
         foreach ($this->messages as $message) {
             Rollbar::report_message(
                     $message[0],
                     self::getLevelName($message[1]),
-                    ['category' => $message[2]],
+                    [
+                            'category' => $message[2],
+                            'request_id' => $this->requestId,
+                    ],
                     ['timestamp' => (int)$message[3]]
             );
         }

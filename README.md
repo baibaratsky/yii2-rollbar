@@ -15,11 +15,11 @@ The preferred way to install this extension is through [composer](http://getcomp
 
  To install, either run
  ```
- $ php composer.phar require baibaratsky/yii2-rollbar:1.0.*
+ $ php composer.phar require baibaratsky/yii2-rollbar:1.1.*
  ```
  or add
  ```
- "baibaratsky/yii2-rollbar": "1.0.*"
+ "baibaratsky/yii2-rollbar": "1.1.*"
  ```
  to the `require` section of your `composer.json` file.
 
@@ -74,3 +74,6 @@ Put the following code in your config:
      ],
  ],
  ```
+
+The log target also appends `category` and `request_id` parameters to the log messages.
+`request_id` is useful if you want to have a *yii2-debug*-like  grouping.
