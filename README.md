@@ -15,11 +15,11 @@ The preferred way to install this extension is through [composer](http://getcomp
 
  To install, either run
  ```
- $ php composer.phar require baibaratsky/yii2-rollbar:1.1.*
+ $ php composer.phar require baibaratsky/yii2-rollbar:1.2.*
  ```
  or add
  ```
- "baibaratsky/yii2-rollbar": "1.1.*"
+ "baibaratsky/yii2-rollbar": "1.2.*"
  ```
  to the `require` section of your `composer.json` file.
 
@@ -33,6 +33,12 @@ Usage
      'rollbar' => [
          'class' => 'baibaratsky\yii\rollbar\Rollbar',
          'accessToken' => 'POST_SERVER_ITEM_ACCESS_TOKEN',
+         
+         // You can specify exceptions to be ignored by yii2-rollbar:
+         // 'ignoreExceptions' => [
+         //         ['yii\web\HttpException', 'statusCode' => [400, 404]],
+         //         ['yii\web\HttpException', 'statusCode' => [403], 'message' => ['This action is forbidden']],
+         // ],
      ],
  ],
  ```
