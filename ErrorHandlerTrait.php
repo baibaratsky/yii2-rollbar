@@ -3,13 +3,31 @@
 namespace baibaratsky\yii\rollbar;
 
 use Rollbar;
-use yii\web\HttpException;
+use Yii;
 
 trait ErrorHandlerTrait
 {
+    public $rollbarComponentName = 'rollbar';
+
     public function handleException($exception)
     {
-        if (!($exception instanceof HttpException && $exception->statusCode === 404)) {
+        $ignoreException = false;
+        foreach (Yii::$app->get($this->rollbarComponentName)->ignoreExceptions as $ignoreRecord) {
+            if ($exception instanceof $ignoreRecord[0]) {
+                $ignoreException = true;
+                foreach (array_slice($ignoreRecord, 1) as $property => $range) {
+                    if (!in_array($exception->$property, $range)) {
+                        $ignoreException = false;
+                        break;
+                    }
+                }
+                if ($ignoreException) {
+                    break;
+                }
+            }
+        }
+
+        if (!$ignoreException) {
             Rollbar::report_exception($exception);
         }
 

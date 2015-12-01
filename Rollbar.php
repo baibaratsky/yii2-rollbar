@@ -23,6 +23,14 @@ class Rollbar extends Object
     public $timeout;
     public $proxy;
 
+    /**
+     * @var array Exceptions to be ignored by yii2-rollbar
+     * Format: ['name of the exception class', 'exception_property' => ['range', 'of', 'values], ...]
+     */
+    public $ignoreExceptions = [
+            ['yii\web\HttpException', 'statusCode' => [404]],
+    ];
+
     public function init()
     {
         \Rollbar::init(
