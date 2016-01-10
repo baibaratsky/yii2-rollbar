@@ -34,7 +34,7 @@ class Target extends \yii\log\Target
         }
     }
 
-    public static function getLevelName($level)
+    protected static function getLevelName($level)
     {
         if (in_array($level,
                 [Logger::LEVEL_PROFILE, Logger::LEVEL_PROFILE_BEGIN, Logger::LEVEL_PROFILE_END, Logger::LEVEL_TRACE])) {
