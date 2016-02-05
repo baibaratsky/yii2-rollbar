@@ -9,6 +9,18 @@ trait ErrorHandlerTrait
 {
     public $rollbarComponentName = 'rollbar';
 
+    /**
+     * @var callable Callback returning a payload data associative array or null
+     * Example:
+     * function (ErrorHandler $errorHandler) {
+     *     return [
+     *         'foo' => 'bar',
+     *         'xyz' => getSomeData(),
+     *     ];
+     * }
+     */
+    public $payloadDataCallback;
+
     public function handleException($exception)
     {
         $ignoreException = false;
@@ -28,7 +40,7 @@ trait ErrorHandlerTrait
         }
 
         if (!$ignoreException) {
-            Rollbar::report_exception($exception);
+            Rollbar::report_exception($exception, null, $this->getPayloadData());
         }
 
         parent::handleException($exception);
@@ -46,5 +58,24 @@ trait ErrorHandlerTrait
         Rollbar::report_fatal_error();
 
         parent::handleFatalError();
+    }
+
+    private function getPayloadData()
+    {
+        if (!isset($this->payloadDataCallback)) {
+            return null;
+        }
+
+        if (!is_callable($this->payloadDataCallback)) {
+            throw new \Exception('Incorrect callback provided');
+        }
+
+        $payloadData = call_user_func($this->payloadDataCallback, $this);
+
+        if (!is_array($payloadData) && !is_null($payloadData)) {
+            throw new \Exception('Callback returns an incorrect result');
+        }
+
+        return $payloadData;
     }
 }

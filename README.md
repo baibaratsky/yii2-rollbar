@@ -15,11 +15,11 @@ The preferred way to install this extension is through [composer](http://getcomp
 
  To install, either run
  ```
- $ php composer.phar require baibaratsky/yii2-rollbar:1.2.*
+ $ php composer.phar require baibaratsky/yii2-rollbar:1.3.*
  ```
  or add
  ```
- "baibaratsky/yii2-rollbar": "1.2.*"
+ "baibaratsky/yii2-rollbar": "1.3.*"
  ```
  to the `require` section of your `composer.json` file.
 
@@ -48,6 +48,14 @@ Usage
  'components' => [
      'errorHandler' => [
          'class' => 'baibaratsky\yii\rollbar\web\ErrorHandler',
+         
+         // You can include additional data in a payload:
+         // 'payloadDataCallback' => function (\baibaratsky\yii\rollbar\web\ErrorHandler $errorHandler) {
+         //     return [
+         //         'exceptionCode' => $errorHandler->exception->getCode(),
+         //         'rawRequestBody' => Yii::$app->request->getRawBody(),
+         //     ];
+         // },
      ],
  ],
  ```
