@@ -4,6 +4,7 @@ namespace baibaratsky\yii\rollbar;
 
 use Rollbar;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 trait ErrorHandlerTrait
 {
@@ -40,7 +41,7 @@ trait ErrorHandlerTrait
         }
 
         if (!$ignoreException) {
-            Rollbar::report_exception($exception, null, $this->getPayloadData());
+            Rollbar::report_exception($exception, null, $this->getPayloadData($exception));
         }
 
         parent::handleException($exception);
@@ -60,7 +61,23 @@ trait ErrorHandlerTrait
         parent::handleFatalError();
     }
 
-    private function getPayloadData()
+    private function getPayloadData(\Exception $exception)
+    {
+        $payloadData = $this->payloadCallback();
+
+        if ($exception instanceof WithPayload) {
+            $exceptionData = $exception->rollbarPayload();
+            if (is_array($exceptionData)) {
+                $payloadData = ArrayHelper::merge($exceptionData, $payloadData);
+            } elseif (!is_null($exceptionData)) {
+                throw new \Exception(get_class($exception) . '::rollbarPayload() returns an incorrect result');
+            }
+        }
+
+        return $payloadData;
+    }
+
+    private function payloadCallback()
     {
         if (!isset($this->payloadDataCallback)) {
             return null;

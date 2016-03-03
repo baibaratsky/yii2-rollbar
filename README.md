@@ -15,11 +15,11 @@ The preferred way to install this extension is through [composer](http://getcomp
 
  To install, either run
  ```
- $ php composer.phar require baibaratsky/yii2-rollbar:1.3.*
+ $ php composer.phar require baibaratsky/yii2-rollbar:1.4.*
  ```
  or add
  ```
- "baibaratsky/yii2-rollbar": "1.3.*"
+ "baibaratsky/yii2-rollbar": "1.4.*"
  ```
  to the `require` section of your `composer.json` file.
 
@@ -67,6 +67,23 @@ Usage
          'class' => 'baibaratsky\yii\rollbar\console\ErrorHandler',
      ],
  ],
+ ```
+
+
+Payload from your exceptions
+----------------------------
+If you want your exceptions to send some additional data to Rollbar,
+it is possible by implementing the `WithPayload` interface.
+ ```php
+ use baibaratsky\yii\rollbar\WithPayload;
+ 
+ class SomeException extends \Exception implements WithPayload
+ {
+     public function rollbarPayload()
+     {
+         return ['foo' => 'bar'];
+     }
+ }
  ```
 
 
