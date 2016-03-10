@@ -68,7 +68,11 @@ trait ErrorHandlerTrait
         if ($exception instanceof WithPayload) {
             $exceptionData = $exception->rollbarPayload();
             if (is_array($exceptionData)) {
-                $payloadData = ArrayHelper::merge($exceptionData, $payloadData);
+                if (is_null($payloadData)) {
+                    $payloadData = $exceptionData;
+                } else {
+                    $payloadData = ArrayHelper::merge($exceptionData, $payloadData);
+                }
             } elseif (!is_null($exceptionData)) {
                 throw new \Exception(get_class($exception) . '::rollbarPayload() returns an incorrect result');
             }
