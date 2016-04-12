@@ -22,7 +22,7 @@ trait ErrorHandlerTrait
      */
     public $payloadDataCallback;
 
-    public function handleException($exception)
+    public function logException($exception)
     {
         $ignoreException = false;
         foreach (Yii::$app->get($this->rollbarComponentName)->ignoreExceptions as $ignoreRecord) {
@@ -44,7 +44,7 @@ trait ErrorHandlerTrait
             Rollbar::report_exception($exception, null, $this->getPayloadData($exception));
         }
 
-        parent::handleException($exception);
+        parent::logException($exception);
     }
 
     public function handleError($code, $message, $file, $line)
