@@ -61,7 +61,7 @@ trait ErrorHandlerTrait
         parent::handleFatalError();
     }
 
-    private function getPayloadData(\Exception $exception)
+    private function getPayloadData($exception)
     {
         $payloadData = $this->payloadCallback();
 
