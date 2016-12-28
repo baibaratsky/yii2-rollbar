@@ -22,6 +22,7 @@ class Rollbar extends Object
     public $scrubFields = ['passwd', 'password', 'secret', 'auth_token', '_csrf'];
     public $timeout;
     public $proxy;
+    public $enableUtf8Sanitization = true;
 
     /**
      * @var array Exceptions to be ignored by yii2-rollbar
@@ -50,6 +51,7 @@ class Rollbar extends Object
                         'scrub_fields' => $this->scrubFields,
                         'timeout' => $this->timeout,
                         'proxy' => $this->proxy,
+                        'enable_utf8_sanitization' => $this->enableUtf8Sanitization,
                 ],
                 false,
                 false,
