@@ -2,7 +2,8 @@
 
 namespace baibaratsky\yii\rollbar;
 
-use Rollbar;
+use Rollbar\Rollbar;
+use Rollbar\Payload\Level;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -41,7 +42,7 @@ trait ErrorHandlerTrait
         }
 
         if (!$ignoreException) {
-            Rollbar::report_exception($exception, null, $this->getPayloadData($exception));
+            Rollbar::log(Level::error(), $exception, $this->getPayloadData($exception));
         }
 
         parent::logException($exception);
@@ -49,14 +50,14 @@ trait ErrorHandlerTrait
 
     public function handleError($code, $message, $file, $line)
     {
-        Rollbar::report_php_error($code, $message, $file, $line);
+        Rollbar::errorHandler($code, $message, $file, $line);
 
         parent::handleError($code, $message, $file, $line);
     }
 
     public function handleFatalError()
     {
-        Rollbar::report_fatal_error();
+        Rollbar::fatalHandler();
 
         parent::handleFatalError();
     }
