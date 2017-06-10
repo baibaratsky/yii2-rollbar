@@ -2,13 +2,14 @@
 
 namespace baibaratsky\yii\rollbar;
 
+use \Rollbar\Rollbar as BaseRollbar;
 use Yii;
 use yii\base\Object;
 
 class Rollbar extends Object
 {
     public $accessToken;
-    public $baseApiUrl;
+    public $baseApiUrl = 'https://api.rollbar.com/api/1/item/';
     public $batchSize;
     public $batched;
     public $branch;
@@ -20,7 +21,7 @@ class Rollbar extends Object
     public $personFn;
     public $root = '@app';
     public $scrubFields = ['passwd', 'password', 'secret', 'auth_token', '_csrf'];
-    public $timeout;
+    public $timeout = 3;
     public $proxy;
     public $enableUtf8Sanitization = true;
 
@@ -34,7 +35,7 @@ class Rollbar extends Object
 
     public function init()
     {
-        \Rollbar::init(
+        BaseRollbar::init(
                 [
                         'access_token' => $this->accessToken,
                         'base_api_url' => $this->baseApiUrl,

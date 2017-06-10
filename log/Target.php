@@ -2,7 +2,8 @@
 
 namespace baibaratsky\yii\rollbar\log;
 
-use Rollbar;
+use Rollbar\Rollbar;
+use Rollbar\Payload\Level;
 use yii\log\Logger;
 
 class Target extends \yii\log\Target
@@ -18,19 +19,11 @@ class Target extends \yii\log\Target
     public function export()
     {
         foreach ($this->messages as $message) {
-            Rollbar::report_message(
-                    $message[0],
-                    self::getLevelName($message[1]),
-                    [
-                            'category' => $message[2],
-                            'request_id' => $this->requestId,
-                    ],
-                    ['timestamp' => (int)$message[3]]
-            );
-        }
-
-        if (Rollbar::$instance->batched) {
-            Rollbar::flush();
+            Rollbar::log(Level::fromName(self::getLevelName($message[1])), $message[0], [
+                'category' => $message[2],
+                'request_id' => $this->requestId,
+                'timestamp' => (int)$message[3],
+            ]);
         }
     }
 
