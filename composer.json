@@ -11,12 +11,6 @@
             "email": "andrei@baibaratsky.com"
         }
     ],
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://asset-packagist.org"
-        }
-    ],
     "require": {
         "rollbar/rollbar": "~1.1.0",
         "yiisoft/yii2": "*"
