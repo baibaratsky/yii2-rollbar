@@ -4,6 +4,7 @@ namespace baibaratsky\yii\rollbar;
 
 use Rollbar\Rollbar;
 use Rollbar\Payload\Level;
+use Rollbar\Utilities;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -42,7 +43,15 @@ trait ErrorHandlerTrait
         }
 
         if (!$ignoreException) {
-            Rollbar::log(Level::error(), $exception, $this->getPayloadData($exception));
+            $extra = $this->getPayloadData($exception);
+
+            if ($extra === null) {
+                $extra = [Utilities::IS_UNCAUGHT_KEY => true];
+            } else {
+                $extra = array_merge($extra, [Utilities::IS_UNCAUGHT_KEY => true]);
+            }
+
+            Rollbar::log(Level::error(), $exception, $extra);
         }
 
         parent::logException($exception);
