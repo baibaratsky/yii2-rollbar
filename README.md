@@ -15,11 +15,11 @@ The preferred way to install this extension is through [composer](http://getcomp
 
  To install, either run
  ```
- $ php composer.phar require baibaratsky/yii2-rollbar:1.5.*
+ $ php composer.phar require baibaratsky/yii2-rollbar:1.6.*
  ```
  or add
  ```
- "baibaratsky/yii2-rollbar": "1.5.*"
+ "baibaratsky/yii2-rollbar": "1.6.*"
  ```
  to the `require` section of your `composer.json` file.
 
