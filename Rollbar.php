@@ -4,9 +4,9 @@ namespace baibaratsky\yii\rollbar;
 
 use \Rollbar\Rollbar as BaseRollbar;
 use Yii;
-use yii\base\Object;
+use yii\base\BaseObject;
 
-class Rollbar extends Object
+class Rollbar extends BaseObject
 {
     public $accessToken;
     public $baseApiUrl = 'https://api.rollbar.com/api/1/item/';
