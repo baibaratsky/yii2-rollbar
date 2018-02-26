@@ -9,7 +9,7 @@ use yii\base\Object;
 class Rollbar extends Object
 {
     public $accessToken;
-    public $baseApiUrl = 'https://api.rollbar.com/api/1/item/';
+    public $baseApiUrl = 'https://api.rollbar.com/api/1/';
     public $batchSize;
     public $batched;
     public $branch;
