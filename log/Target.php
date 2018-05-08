@@ -19,7 +19,8 @@ class Target extends \yii\log\Target
     public function export()
     {
         foreach ($this->messages as $message) {
-            Rollbar::log(Level::fromName(self::getLevelName($message[1])), $message[0], [
+            $levelName = self::getLevelName($message[1]);
+            Rollbar::log(Level::$levelName(), $message[0], [
                 'category' => $message[2],
                 'request_id' => $this->requestId,
                 'timestamp' => (int)$message[3],
