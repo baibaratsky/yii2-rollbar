@@ -8,6 +8,7 @@ use yii\base\BaseObject;
 
 class Rollbar extends BaseObject
 {
+    public $enabled = true;
     public $accessToken;
     public $baseApiUrl = 'https://api.rollbar.com/api/1/';
     public $batchSize;
@@ -36,6 +37,7 @@ class Rollbar extends BaseObject
     public function init()
     {
         BaseRollbar::init([
+            'enabled' => $this->enabled,
             'access_token' => $this->accessToken,
             'base_api_url' => $this->baseApiUrl,
             'batch_size' => $this->batchSize,
