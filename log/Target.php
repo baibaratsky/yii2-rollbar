@@ -2,8 +2,8 @@
 
 namespace baibaratsky\yii\rollbar\log;
 
-use Rollbar\Rollbar;
 use Rollbar\Payload\Level;
+use Rollbar\Rollbar;
 use yii\log\Logger;
 
 class Target extends \yii\log\Target
@@ -31,7 +31,7 @@ class Target extends \yii\log\Target
     protected static function getLevelName($level)
     {
         if (in_array($level,
-                [Logger::LEVEL_PROFILE, Logger::LEVEL_PROFILE_BEGIN, Logger::LEVEL_PROFILE_END, Logger::LEVEL_TRACE])) {
+            [Logger::LEVEL_PROFILE, Logger::LEVEL_PROFILE_BEGIN, Logger::LEVEL_PROFILE_END, Logger::LEVEL_TRACE])) {
             return 'debug';
         }
 
