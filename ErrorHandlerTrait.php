@@ -2,8 +2,8 @@
 
 namespace baibaratsky\yii\rollbar;
 
-use Rollbar\Rollbar;
 use Rollbar\Payload\Level;
+use Rollbar\Rollbar;
 use Rollbar\Utilities;
 use Yii;
 use yii\helpers\ArrayHelper;
