@@ -4,8 +4,8 @@ namespace baibaratsky\yii\rollbar;
 
 use Rollbar\Payload\Level;
 use Rollbar\Rollbar;
-use Rollbar\Utilities;
 use Yii;
+use yii\base\ErrorException;
 use yii\helpers\ArrayHelper;
 
 trait ErrorHandlerTrait
@@ -26,49 +26,9 @@ trait ErrorHandlerTrait
 
     public function logException($exception)
     {
-        $ignoreException = false;
-        foreach (Yii::$app->get($this->rollbarComponentName)->ignoreExceptions as $ignoreRecord) {
-            if ($exception instanceof $ignoreRecord[0]) {
-                $ignoreException = true;
-                foreach (array_slice($ignoreRecord, 1) as $property => $range) {
-                    if (!in_array($exception->$property, $range)) {
-                        $ignoreException = false;
-                        break;
-                    }
-                }
-                if ($ignoreException) {
-                    break;
-                }
-            }
-        }
-
-        if (!$ignoreException) {
-            $extra = $this->getPayloadData($exception);
-
-            if ($extra === null) {
-                $extra = [Utilities::IS_UNCAUGHT_KEY => true];
-            } else {
-                $extra = array_merge($extra, [Utilities::IS_UNCAUGHT_KEY => true]);
-            }
-
-            Rollbar::log(Level::error(), $exception, $extra);
-        }
+        $this->logExceptionRollbar($exception);
 
         parent::logException($exception);
-    }
-
-    public function handleError($code, $message, $file, $line)
-    {
-        Rollbar::errorHandler($code, $message, $file, $line);
-
-        parent::handleError($code, $message, $file, $line);
-    }
-
-    public function handleFatalError()
-    {
-        Rollbar::fatalHandler();
-
-        parent::handleFatalError();
     }
 
     private function getPayloadData($exception)
@@ -108,5 +68,42 @@ trait ErrorHandlerTrait
         }
 
         return $payloadData;
+    }
+
+    protected function logExceptionRollbar($exception)
+    {
+        foreach (Yii::$app->get($this->rollbarComponentName)->ignoreExceptions as $ignoreRecord) {
+            if ($exception instanceof $ignoreRecord[0]) {
+                $ignoreException = true;
+                foreach (array_slice($ignoreRecord, 1) as $property => $range) {
+                    if (!in_array($exception->$property, $range)) {
+                        $ignoreException = false;
+                        break;
+                    }
+                }
+                if ($ignoreException) {
+                    return;
+                }
+            }
+        }
+        // Check if an error coming from handleError() should be ignored.
+        if ($exception instanceof ErrorException && Rollbar::logger()->shouldIgnoreError($exception->getCode())) {
+            return;
+        }
+
+        $extra = $this->getPayloadData($exception);
+        if ($extra === null) {
+            $extra = [];
+        }
+        $level = $this->isFatal($exception) ? Level::CRITICAL : Level::ERROR;
+
+        Rollbar::log($level, $exception, $extra, true);
+    }
+
+    protected function isFatal($exception): bool
+    {
+        return $exception instanceof \Error
+            || ($exception instanceof ErrorException
+                && ErrorException::isFatalError(['type' => $exception->getSeverity()]));
     }
 }
