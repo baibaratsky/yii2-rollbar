@@ -14,7 +14,7 @@
     "require": {
         "php": ">=7.1",
         "yiisoft/yii2": "^2.0.15",
-        "rollbar/rollbar": "^1.5"
+        "rollbar/rollbar": "^2.1"
     },
     "autoload": {
         "psr-4": {
