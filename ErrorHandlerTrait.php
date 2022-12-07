@@ -24,6 +24,9 @@ trait ErrorHandlerTrait
      */
     public $payloadDataCallback;
 
+    /**
+     * @return void
+     */
     public function logException($exception)
     {
         $this->logExceptionRollbar($exception);
@@ -51,7 +54,7 @@ trait ErrorHandlerTrait
         return $payloadData;
     }
 
-    private function payloadCallback()
+    private function payloadCallback(): array|null
     {
         if (!isset($this->payloadDataCallback)) {
             return null;
@@ -70,6 +73,9 @@ trait ErrorHandlerTrait
         return $payloadData;
     }
 
+    /**
+     * @return void
+     */
     protected function logExceptionRollbar($exception)
     {
         foreach (Yii::$app->get($this->rollbarComponentName)->ignoreExceptions as $ignoreRecord) {

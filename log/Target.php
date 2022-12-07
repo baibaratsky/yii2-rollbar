@@ -10,12 +10,18 @@ class Target extends \yii\log\Target
 {
     protected $requestId;
 
+    /**
+     * @return void
+     */
     public function init()
     {
         $this->requestId = uniqid(gethostname(), true);
         parent::init();
     }
 
+    /**
+     * @return void
+     */
     public function export()
     {
         foreach ($this->messages as $message) {
@@ -28,7 +34,7 @@ class Target extends \yii\log\Target
         }
     }
 
-    protected static function getLevelName($level)
+    protected static function getLevelName($level): string
     {
         if (in_array($level,
             [Logger::LEVEL_PROFILE, Logger::LEVEL_PROFILE_BEGIN, Logger::LEVEL_PROFILE_END, Logger::LEVEL_TRACE])) {
