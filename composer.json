@@ -14,7 +14,7 @@
     "require": {
         "php": ">=8.0",
         "yiisoft/yii2": "^2.0",
-        "rollbar/rollbar": "^3.1"
+        "rollbar/rollbar": "^3.1 || ^4.0.2"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
